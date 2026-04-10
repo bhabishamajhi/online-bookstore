@@ -1,0 +1,43 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import api from "../api";
+
+const BookDetails = () => {
+  const { id } = useParams();
+  const [book, setBook] = useState(null);
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      const res = await api.get(`/books/${id}`);
+      setBook(res.data);
+    };
+    fetchBook();
+  }, [id]);
+
+  const handleAddToCart = async () => {
+  await api.post("/cart", {
+    userId: "default-user",
+    bookId: book._id,
+    quantity: 1
+  });
+  alert("Added to cart");
+};
+
+  if (!book) return <p>Loading...</p>;
+
+  return (
+    <div className="card">
+      <div className="card-body">
+        <h3>{book.title}</h3>
+        <p>Author: {book.author}</p>
+        <p>Price: ${book.price}</p>
+        <p>Category: {book.category}</p>
+        <p>Description: {book.description}</p>
+        <p>Stock: {book.stock}</p>
+        <button className="btn btn-success" onClick={handleAddToCart}>Add to Cart</button>
+      </div>
+    </div>
+  );
+};
+
+export default BookDetails;
