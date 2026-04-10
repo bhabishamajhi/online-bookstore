@@ -4,15 +4,17 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/books", require("./routes/bookRoutes"));
+app.use("/api/cart", require("./routes/cartRoutes"));
+
 mongoose.connect(process.env.MONGO_URI)
-.then(()=> console.log("MongoDB Connected"))
+.then(() => console.log("MongoDB Connected"))
 .catch(err => console.log(err));
 
-app.use("/books", require("./routes/bookRoutes"));
-app.use("/cart", require("./routes/cartRoutes"));
 app.get("/", (req, res) => {
   res.send("Backend is running successfully 🚀");
 });
