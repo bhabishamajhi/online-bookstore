@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Link } from "react-router-dom";
-
 import BookList from "./components/BookList";
 import BookDetails from "./components/BookDetails";
 import AddBook from "./components/AddBook";
