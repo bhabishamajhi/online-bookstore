@@ -8,7 +8,7 @@ export default function Home() {
 useEffect(() => {
   getBooks()
     .then(res => {
-      console.log("DATA:", res.data); 
+      console.log("BOOKS DATA:", res.data); 
       setBooks(res.data);
     })
     .catch(err => {
