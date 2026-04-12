@@ -30,7 +30,7 @@ const AddBook = () => {
       });
 
       alert("Book added successfully!");
-      navigate("/");
+      navigate("/books");
     } catch (err) {
       console.error(err);
       alert("Error adding book");
