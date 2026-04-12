@@ -1,49 +1,42 @@
-import React, { useEffect, useState } from "react";
-import api from "../api";
+import { useEffect, useState } from "react";
+import { getCart, addToCart, clearCart } from "../api";
 
-const Cart = () => {
+export default function Cart() {
+  const userId = "user1";
   const [cart, setCart] = useState({ items: [] });
 
-  const fetchCart = async () => {
-    const res = await api.get("/cart/default-user");
-    setCart(res.data);
-  };
+  const fetchCart = () => getCart(userId).then(res => setCart(res.data || { items: [] }));
 
   useEffect(() => { fetchCart(); }, []);
 
-  const updateQuantity = async (bookId, quantity) => {
-    if (quantity < 1) return;
-    await api.post("/cart", {
-      userId: "default-user",
-      bookId,
-      quantity
-    });
-    fetchCart();
+  const handleQuantity = (bookId, qty) => {
+    addToCart({ userId, bookId, quantity: qty }).then(fetchCart);
   };
 
-  const total = cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const handleClear = () => clearCart(userId).then(fetchCart);
 
-  if (!cart.items.length) return <p>Cart empty</p>;
+  const total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="container mt-4">
-      <h3>Your Cart</h3>
-
-      {cart.items.map(item => (
-        <div key={item.bookId} className="d-flex justify-content-between border p-2 mb-2">
-          <div>
-            <b>{item.title}</b><br/>
-            <button onClick={()=>updateQuantity(item.bookId,item.quantity-1)}>-</button>
-            {item.quantity}
-            <button onClick={()=>updateQuantity(item.bookId,item.quantity+1)}>+</button>
-          </div>
-          <div>${item.price * item.quantity}</div>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
+      {cart.items.length === 0 ? <p>Cart is empty</p> : (
+        <div>
+          {cart.items.map(item => (
+            <div key={item.bookId} className="flex justify-between border p-2 mb-2">
+              <div>
+                <p className="font-semibold">{item.title}</p>
+                <p>Price: ${item.price}</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input type="number" min="1" value={item.quantity} onChange={e => handleQuantity(item.bookId, Number(e.target.value))} className="border p-1 w-16" />
+              </div>
+            </div>
+          ))}
+          <p className="font-bold mt-2">Total: ${total}</p>
+          <button onClick={handleClear} className="bg-red-500 text-white px-4 py-2 rounded mt-2">Clear Cart</button>
         </div>
-      ))}
-
-      <h4>Total: ${total}</h4>
+      )}
     </div>
   );
-};
-
-export default Cart;
+}

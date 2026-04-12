@@ -9,13 +9,20 @@ const BookCard = ({ book, onDelete }) => {
   const handleDetails = () => navigate(`/books/${book._id}`);
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure?")) {
-      try {
-        await api.delete(`/books/${book._id}`);
-        onDelete(book._id);
-      } catch (err) { console.error(err); alert("Error deleting book"); }
+  if (!onDelete) return; 
+
+  if (window.confirm("Are you sure?")) {
+    try {
+      await api.delete(`/books/${book._id}`);
+      onDelete(book._id);
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting book");
     }
-  };
+  }
+};
+
+
 
   const renderStars = () => {
     const stars = [];

@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 import BookList from "./components/BookList";
 import BookDetails from "./components/BookDetails";
 import AddBook from "./components/AddBook";
@@ -10,10 +11,11 @@ const App = () => {
   return (
     <Router>
       <nav className="navbar navbar-dark bg-dark px-3">
-        <a className="navbar-brand" href="/">Bookstore</a>
+        <Link className="navbar-brand" to="/">Bookstore</Link>
+
         <div className="ms-auto">
-          <a className="text-white me-3" href="/add">Add</a>
-          <a className="text-white" href="/cart">Cart</a>
+          <Link className="text-white me-3" to="/add">Add</Link>
+          <Link className="text-white" to="/cart">Cart</Link>
         </div>
       </nav>
 

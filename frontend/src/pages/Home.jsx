@@ -8,26 +8,25 @@ export default function Home() {
   useEffect(() => {
     getBooks()
       .then(res => {
-        console.log("DATA:", res.data);
         setBooks(Array.isArray(res.data) ? res.data : []);
       })
       .catch(err => {
-        console.error("FETCH ERROR:", err);
-        setBooks([]); // ✅ prevent crash
+        console.error(err);
+        setBooks([]);
       });
   }, []);
 
   return (
-    <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      
+    <div className="row">
       {books.length > 0 ? (
         books.map(book => (
-          <BookCard key={book._id} book={book} />
+          <div className="col-md-3 mb-3" key={book._id}>
+            <BookCard book={book} />
+          </div>
         ))
       ) : (
-        <h2>Loading or No Books Found</h2>
+        <h3>Loading...</h3>
       )}
-
     </div>
   );
 }
