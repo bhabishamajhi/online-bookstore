@@ -26,6 +26,7 @@ const total = items.reduce(
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
+      if (!cart || !cart.items) return <p>Loading...</p>;
       {items.length === 0 ? <p>Cart is empty</p> : (
         <div>
           {cart.items.map(item => (
