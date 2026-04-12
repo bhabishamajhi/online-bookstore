@@ -5,26 +5,27 @@ import BookCard from "../components/BookCard";
 export default function Home() {
   const [books, setBooks] = useState([]);
 
-useEffect(() => {
-  getBooks()
-    .then(res => {
-      console.log("BOOKS DATA:", res.data); 
-      setBooks(res.data);
-    })
-    .catch(err => {
-      console.error("ERROR:", err);
-    });
-}, []);
+  useEffect(() => {
+    getBooks()
+      .then(res => {
+        console.log("DATA:", res.data);
+        setBooks(Array.isArray(res.data) ? res.data : []);
+      })
+      .catch(err => {
+        console.error("FETCH ERROR:", err);
+        setBooks([]); // ✅ prevent crash
+      });
+  }, []);
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       
-      {Array.isArray(books) && books.length > 0 ? (
+      {books.length > 0 ? (
         books.map(book => (
           <BookCard key={book._id} book={book} />
         ))
       ) : (
-        <p>No books available</p>
+        <h2>Loading or No Books Found</h2>
       )}
 
     </div>

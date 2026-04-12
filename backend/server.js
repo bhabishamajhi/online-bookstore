@@ -6,14 +6,10 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const cors = require("cors");
+
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://online-bookstore-livid.vercel.app",
-    "https://online-bookstore-l34s5z0rm-bhabishamajhis-projects.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  origin: "*",   
 }));
 app.use("/api/books", require("./routes/bookRoutes"));
 app.use("/api/cart", require("./routes/cartRoutes"));
