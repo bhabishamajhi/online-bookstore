@@ -14,7 +14,7 @@ const BookCard = ({ book, onDelete }) => {
   if (window.confirm("Are you sure?")) {
     try {
       await api.delete(`/books/${book._id}`);
-      onDelete(book._id);
+      if (onDelete) onDelete(book._id);
     } catch (err) {
       console.error(err);
       alert("Error deleting book");
