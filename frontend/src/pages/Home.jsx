@@ -8,12 +8,16 @@ export default function Home() {
   useEffect(() => {
     getBooks()
       .then(res => {
-        console.log(res.data);
-        setBooks(Array.isArray(res.data) ? res.data : []);
+        console.log(res.data); 
+        if (Array.isArray(res.data)) {
+          setBooks(res.data);
+        } else {
+          setBooks([]);
+        }
       })
       .catch(err => {
         console.error(err);
-        setBooks([]); 
+        setBooks([]);
       });
   }, []);
 
