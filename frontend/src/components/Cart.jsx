@@ -10,17 +10,23 @@ export default function Cart() {
   useEffect(() => { fetchCart(); }, []);
 
   const handleQuantity = (bookId, qty) => {
-    addToCart({ userId, bookId, quantity: qty }).then(fetchCart);
-  };
+  if (qty < 1) return;
+  addToCart({ userId, bookId, quantity: qty }).then(fetchCart);
+};
 
   const handleClear = () => clearCart(userId).then(fetchCart);
 
-  const total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart?.items || [];
+
+const total = items.reduce(
+  (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+  0
+);
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
-      {cart.items.length === 0 ? <p>Cart is empty</p> : (
+      {items.length === 0 ? <p>Cart is empty</p> : (
         <div>
           {cart.items.map(item => (
             <div key={item.bookId} className="flex justify-between border p-2 mb-2">
@@ -35,6 +41,7 @@ export default function Cart() {
           ))}
           <p className="font-bold mt-2">Total: ${total}</p>
           <button onClick={handleClear} className="bg-red-500 text-white px-4 py-2 rounded mt-2">Clear Cart</button>
+          if (!cart || !cart.items) return <p>Loading cart...</p>;
         </div>
       )}
     </div>

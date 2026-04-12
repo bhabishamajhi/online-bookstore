@@ -6,4 +6,10 @@ const api = axios.create({
 
 export const getBooks = () => api.get("/books");
 
+export const getCart = (userId) => api.get(`/cart/${userId}`);
+
+export const addToCart = (data) => api.post("/cart", data);
+
+export const clearCart = (userId) => api.delete(`/cart/${userId}`);
+
 export default api;
