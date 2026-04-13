@@ -29,17 +29,15 @@ const BookList = () => {
   }, []);
 
   const filteredBooks = (Array.isArray(books) ? books : []).filter(book => {
-  const title = (book?.title || "").toLowerCase();
-  const author = (book?.author || "").toLowerCase();
+  if (!book) return false;
 
-  const matchesSearch =
-    title.includes(search.toLowerCase()) ||
-    author.includes(search.toLowerCase());
+  const title = (book.title || "").toLowerCase();
+  const author = (book.author || "").toLowerCase();
 
-  const matchesCategory =
-    category === "All" || book?.category === category;
-
-  return matchesSearch && matchesCategory;
+  return (
+    title.includes((search || "").toLowerCase()) ||
+    author.includes((search || "").toLowerCase())
+  );
 });
   return (
     <>

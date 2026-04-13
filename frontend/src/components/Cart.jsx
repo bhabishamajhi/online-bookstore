@@ -7,7 +7,13 @@ export default function Cart() {
 
   const fetchCart = () => {
     getCart(userId)
-      .then(res => setCart(res.data || { items: [] }))
+      .then(res => {
+        if (res.data && Array.isArray(res.data.items)) {
+          setCart(res.data);
+        } else {
+          setCart({ items: [] });
+        }
+      })
       .catch(() => setCart({ items: [] }));
   };
 
@@ -20,12 +26,12 @@ export default function Cart() {
     addToCart({ userId, bookId, quantity: qty }).then(fetchCart);
   };
 
-  const items = cart?.items || [];
+  const items = Array.isArray(cart.items) ? cart.items : [];
 
-const total = items.reduce(
-  (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
-  0
-);
+  const total = items.reduce(
+    (sum, item) => sum + (item?.price || 0) * (item?.quantity || 0),
+    0
+  );
 
   return (
     <div>
@@ -36,8 +42,8 @@ const total = items.reduce(
       ) : (
         <>
           {items.map(item => (
-            <div key={item.bookId} className="border p-2 mb-2">
-              <b>{item.title}</b>
+            <div key={item.bookId || Math.random()} className="border p-2 mb-2">
+              <b>{item?.title || "No Title"}</b>
 
               <div>
                 <button onClick={() => handleQuantity(item.bookId, item.quantity - 1)}>-</button>
@@ -49,7 +55,7 @@ const total = items.reduce(
 
           <h4>Total: ${total}</h4>
 
-          <button className="btn btn-danger" onClick={() => clearCart(userId).then(fetchCart)}>
+          <button onClick={() => clearCart(userId).then(fetchCart)}>
             Clear Cart
           </button>
         </>
