@@ -7,13 +7,8 @@ export default function Home() {
 
   useEffect(() => {
     getBooks()
-      .then(res => {
-        setBooks(Array.isArray(res.data) ? res.data : []);
-      })
-      .catch(err => {
-        console.error(err);
-        setBooks([]);
-      });
+      .then(res => setBooks(Array.isArray(res.data) ? res.data : []))
+      .catch(() => setBooks([]));
   }, []);
 
   return (
@@ -25,7 +20,7 @@ export default function Home() {
           </div>
         ))
       ) : (
-        <h3>Loading...</h3>
+        <h4>Loading...</h4>
       )}
     </div>
   );

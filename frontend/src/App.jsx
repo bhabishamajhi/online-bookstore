@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import BookList from "./components/BookList";
-import BookDetails from "./components/BookDetails";
-import AddBook from "./components/AddBook";
-import EditBook from "./components/EditBook";
-import Cart from "./components/Cart";
 
-const App = () => {
+import Home from "./pages/Home";
+import BookDetails from "./pages/BookDetails";
+import AddBook from "./pages/AddBook";
+import EditBook from "./pages/EditBook";
+import Cart from "./pages/Cart";
+
+export default function App() {
   return (
     <Router>
       <nav className="navbar navbar-dark bg-dark px-3">
@@ -20,7 +21,7 @@ const App = () => {
 
       <div className="container mt-4">
         <Routes>
-          <Route path="/" element={<BookList />} />
+          <Route path="/" element={<Home />} />
           <Route path="/books/:id" element={<BookDetails />} />
           <Route path="/add" element={<AddBook />} />
           <Route path="/edit/:id" element={<EditBook />} />
@@ -29,6 +30,4 @@ const App = () => {
       </div>
     </Router>
   );
-};
-
-export default App;
+}
