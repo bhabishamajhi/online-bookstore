@@ -1,65 +1,49 @@
-import { useEffect, useState } from "react";
-import { getCart, addToCart, clearCart } from "../api";
+import React, { useEffect, useState } from "react";
+import api from "../api";
 
-export default function Cart() {
-  const userId = "user1";
+const Cart = () => {
   const [cart, setCart] = useState({ items: [] });
 
-  const fetchCart = () => {
-    getCart(userId)
-      .then(res => {
-        if (res.data && Array.isArray(res.data.items)) {
-          setCart(res.data);
-        } else {
-          setCart({ items: [] });
-        }
-      })
-      .catch(() => setCart({ items: [] }));
+  const fetchCart = async () => {
+    const res = await api.get("/cart/default-user");
+    setCart(res.data);
   };
 
-  useEffect(() => {
+  useEffect(() => { fetchCart(); }, []);
+
+  const updateQuantity = async (bookId, quantity) => {
+    if (quantity < 1) return;
+    await api.post("/cart", {
+      userId: "default-user",
+      bookId,
+      quantity
+    });
     fetchCart();
-  }, []);
-
-  const handleQuantity = (bookId, qty) => {
-    if (qty < 1) return;
-    addToCart({ userId, bookId, quantity: qty }).then(fetchCart);
   };
 
-  const items = Array.isArray(cart.items) ? cart.items : [];
+  const total = cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
-  const total = items.reduce(
-    (sum, item) => sum + (item?.price || 0) * (item?.quantity || 0),
-    0
-  );
+  if (!cart.items.length) return <p>Cart empty</p>;
 
   return (
-    <div>
-      <h2>Cart</h2>
+    <div className="container mt-4">
+      <h3>Your Cart</h3>
 
-      {items.length === 0 ? (
-        <p>Cart empty</p>
-      ) : (
-        <>
-          {items.map(item => (
-            <div key={item.bookId || Math.random()} className="border p-2 mb-2">
-              <b>{item?.title || "No Title"}</b>
+      {cart.items.map(item => (
+        <div key={item.bookId} className="d-flex justify-content-between border p-2 mb-2">
+          <div>
+            <b>{item.title}</b><br/>
+            <button onClick={()=>updateQuantity(item.bookId,item.quantity-1)}>-</button>
+            {item.quantity}
+            <button onClick={()=>updateQuantity(item.bookId,item.quantity+1)}>+</button>
+          </div>
+          <div>${item.price * item.quantity}</div>
+        </div>
+      ))}
 
-              <div>
-                <button onClick={() => handleQuantity(item.bookId, item.quantity - 1)}>-</button>
-                {item.quantity}
-                <button onClick={() => handleQuantity(item.bookId, item.quantity + 1)}>+</button>
-              </div>
-            </div>
-          ))}
-
-          <h4>Total: ${total}</h4>
-
-          <button onClick={() => clearCart(userId).then(fetchCart)}>
-            Clear Cart
-          </button>
-        </>
-      )}
+      <h4>Total: ${total}</h4>
     </div>
   );
-}
+};
+
+export default Cart;

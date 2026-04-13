@@ -1,30 +1,27 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import BookList from "./components/BookList";
+import BookDetails from "./components/BookDetails";
+import AddBook from "./components/AddBook";
+import EditBook from "./components/EditBook";
+import Cart from "./components/Cart";
 
-import Home from "./pages/Home";
-import BookDetails from "./pages/BookDetails";
-import AddBook from "./pages/AddBook";
-import EditBook from "./pages/EditBook";
-import Cart from "./pages/Cart";
-window.onerror = function (msg, url, line) {
-  alert("ERROR: " + msg + " at line: " + line);
-};
-
-export default function App() {
+const App = () => {
   return (
     <Router>
-      <nav className="navbar navbar-dark bg-dark px-3">
-        <Link className="navbar-brand" to="/">Bookstore</Link>
 
-        <div className="ms-auto">
-          <Link className="text-white me-3" to="/add">Add</Link>
-          <Link className="text-white" to="/cart">Cart</Link>
-        </div>
-      </nav>
+      <nav className="navbar navbar-dark bg-dark px-3">
+  <a className="navbar-brand" href="/">Bookstore</a>
+  <div className="ms-auto">
+    <a className="text-white me-3" href="/add">Add</a>
+    <a className="text-white" href="/cart">Cart</a>
+  </div>
+</nav>
+   
 
       <div className="container mt-4">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<BookList />} />
           <Route path="/books/:id" element={<BookDetails />} />
           <Route path="/add" element={<AddBook />} />
           <Route path="/edit/:id" element={<EditBook />} />
@@ -33,4 +30,6 @@ export default function App() {
       </div>
     </Router>
   );
-}
+};
+
+export default App;

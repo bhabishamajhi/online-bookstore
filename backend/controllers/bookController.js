@@ -16,7 +16,6 @@ exports.addBook = async (req, res) => {
     const book = await Book.create(req.body);
     res.status(201).json(book);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -28,5 +27,5 @@ exports.updateBook = async (req, res) => {
 
 exports.deleteBook = async (req, res) => {
   await Book.findByIdAndDelete(req.params.id);
-  res.json({ message: "Book deleted" });
+  res.json({ message: "Deleted" });
 };

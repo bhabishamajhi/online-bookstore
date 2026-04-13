@@ -4,63 +4,29 @@ import api from "../api";
 
 const AddBook = () => {
   const navigate = useNavigate();
+  const [form, setForm] = useState({ title:"", author:"", price:0, description:"", category:"", stock:0, rating:0 });
 
-  const [form, setForm] = useState({
-    title: "",
-    author: "",
-    price: "",
-    description: "",
-    category: "",
-    stock: "",
-    rating: ""
-  });
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-
     try {
-      await api.post("/books", {
-        ...form,
-        price: Number(form.price),
-        stock: Number(form.stock),
-        rating: Number(form.rating)
-      });
-
+      await api.post("/books", form);
       alert("Book added successfully!");
-      navigate("/books");
-    } catch (err) {
-      console.error(err);
-      alert("Error adding book");
-    }
+      navigate("/");
+    } catch (err) { console.error(err); alert("Error adding book"); }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      {Object.keys(form).map((field) => (
+      {["title","author","price","description","category","stock","rating"].map(field => (
         <div className="mb-3" key={field}>
-          <label className="form-label">
-            {field.charAt(0).toUpperCase() + field.slice(1)}
-          </label>
-
-          <input
-            type={
-              field === "price" || field === "stock" || field === "rating"
-                ? "number"
-                : "text"
-            }
-            className="form-control"
-            name={field}
-            value={form[field]}
-            onChange={handleChange}
-            required
-          />
+          <label className="form-label">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+          <input type={field==="price"||field==="stock"||field==="rating"?"number":"text"} className="form-control" name={field} value={form[field]} onChange={handleChange} required />
         </div>
       ))}
-
       <button className="btn btn-primary">Add Book</button>
+ 
     </form>
   );
 };
