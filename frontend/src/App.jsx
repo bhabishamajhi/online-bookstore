@@ -6,6 +6,9 @@ import BookDetails from "./pages/BookDetails";
 import AddBook from "./pages/AddBook";
 import EditBook from "./pages/EditBook";
 import Cart from "./pages/Cart";
+window.onerror = function (msg, url, line) {
+  alert("ERROR: " + msg + " at line: " + line);
+};
 
 export default function App() {
   return (

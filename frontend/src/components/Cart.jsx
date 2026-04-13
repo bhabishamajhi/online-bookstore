@@ -22,10 +22,10 @@ export default function Cart() {
 
   const items = cart?.items || [];
 
-  const total = items.reduce(
-    (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
-    0
-  );
+const total = items.reduce(
+  (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+  0
+);
 
   return (
     <div>

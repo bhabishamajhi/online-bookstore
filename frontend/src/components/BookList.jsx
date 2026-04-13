@@ -28,16 +28,19 @@ const BookList = () => {
     fetchBooks();
   }, []);
 
-  const filteredBooks = books.filter(book => {
-    const matchesSearch =
-      book.title.toLowerCase().includes(search.toLowerCase()) ||
-      book.author.toLowerCase().includes(search.toLowerCase());
+  const filteredBooks = (Array.isArray(books) ? books : []).filter(book => {
+  const title = (book?.title || "").toLowerCase();
+  const author = (book?.author || "").toLowerCase();
 
-    const matchesCategory = category === "All" || book.category === category;
+  const matchesSearch =
+    title.includes(search.toLowerCase()) ||
+    author.includes(search.toLowerCase());
 
-    return matchesSearch && matchesCategory;
-  });
+  const matchesCategory =
+    category === "All" || book?.category === category;
 
+  return matchesSearch && matchesCategory;
+});
   return (
     <>
       <div className="row mb-4">

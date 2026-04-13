@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="row">
       {books.length > 0 ? (
-        books.map(book => (
+        (Array.isArray(books) ? books : []).map(book => (
           <div className="col-md-3 mb-3" key={book._id}>
             <BookCard book={book} />
           </div>
