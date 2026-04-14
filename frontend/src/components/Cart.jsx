@@ -5,38 +5,32 @@ const Cart = () => {
   const [cart, setCart] = useState({ items: [] });
 
   const fetchCart = async () => {
-    try {
-      const res = await api.get("/cart/default-user");
-      setCart(res.data || { items: [] });
-    } catch (err) {
-      console.log(err);
-      setCart({ items: [] });
-    }
+    const res = await api.get("/cart/default-user");
+    setCart(res.data || { items: [] });
   };
 
   useEffect(() => {
     fetchCart();
   }, []);
 
-  const updateQuantity = async (bookId, quantity) => {
-    try {
-      if (quantity < 1) {
-        await api.post("/cart/remove", {
-          userId: "default-user",
-          bookId,
-        });
-      } else {
-        await api.post("/cart", {
-          userId: "default-user",
-          bookId,
-          quantity,
-        });
-      }
-
-      fetchCart();
-    } catch (err) {
-      console.log(err);
+  // PROFESSIONAL LOGIC
+  const updateQuantity = async (item, newQty) => {
+    if (newQty <= 0) {
+      await api.post("/cart/remove", {
+        userId: "default-user",
+        bookId: item.bookId,
+      });
+    } else {
+      await api.post("/cart", {
+        userId: "default-user",
+        bookId: item.bookId,
+        title: item.title,
+        price: item.price,
+        quantity: newQty,
+      });
     }
+
+    fetchCart();
   };
 
   const total = (cart.items || []).reduce(
@@ -44,45 +38,43 @@ const Cart = () => {
     0
   );
 
-  if (!cart?.items || cart.items.length === 0) {
-    return <p>Cart empty</p>;
-  }
-
   return (
     <div className="container mt-4">
-      <h3>Your Cart</h3>
+      <h3>🛒 Your Cart</h3>
 
-      {cart.items.map((item) => (
-        <div
-          key={item.bookId}
-          className="d-flex justify-content-between border p-2 mb-2"
-        >
-          <div>
-            <b>{item.title}</b>
-            <br />
+      {(!cart.items || cart.items.length === 0) ? (
+        <p>Cart is empty</p>
+      ) : (
+        cart.items.map((item) => (
+          <div
+            key={item.bookId}
+            className="d-flex justify-content-between border p-2 mb-2"
+          >
+            <div>
+              <b>{item.title}</b>
+              <br />
 
-            <button
-              onClick={() =>
-                updateQuantity(item.bookId, item.quantity - 1)
-              }
-            >
-              -
-            </button>
+              <button onClick={() =>
+                updateQuantity(item, item.quantity - 1)
+              }>
+                -
+              </button>
 
-            <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+              <span style={{ margin: "0 10px" }}>
+                {item.quantity}
+              </span>
 
-            <button
-              onClick={() =>
-                updateQuantity(item.bookId, item.quantity + 1)
-              }
-            >
-              +
-            </button>
+              <button onClick={() =>
+                updateQuantity(item, item.quantity + 1)
+              }>
+                +
+              </button>
+            </div>
+
+            <div>${item.price * item.quantity}</div>
           </div>
-
-          <div>${item.price * item.quantity}</div>
-        </div>
-      ))}
+        ))
+      )}
 
       <h4>Total: ${total}</h4>
     </div>
