@@ -12,14 +12,20 @@ const Cart = () => {
   useEffect(() => { fetchCart(); }, []);
 
   const updateQuantity = async (bookId, quantity) => {
-    if (quantity < 1) return;
+  if (quantity < 1) {
+    await api.delete(`/cart/${bookId}`, {
+      data: { userId: "default-user" }
+    });
+  } else {
     await api.post("/cart", {
       userId: "default-user",
       bookId,
       quantity
     });
-    fetchCart();
-  };
+  }
+
+  fetchCart();
+};
 
   const total = cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
