@@ -1,6 +1,12 @@
+import React from "react";
+import Home from "./pages/Home";
+
 function App() {
   return (
-    <h1>Hello Bhabisha 👋 Your website is working!</h1>
+    <div>
+      <h1>📚 Online Bookstore</h1>
+      <Home />
+    </div>
   );
 }
 
