@@ -28,12 +28,12 @@ const BookDetails = () => {
   return (
     <div className="card">
       <div className="card-body">
-        <h3>{book.title}</h3>
-        <p>Author: {book.author}</p>
-        <p>Price: ${book.price}</p>
-        <p>Category: {book.category}</p>
-        <p>Description: {book.description}</p>
-        <p>Stock: {book.stock}</p>
+        <h3>{book.title || "No Title"}</h3>
+        <p>Author: {book.author || "No Author"}</p>
+        <p>Price: ${book.price || 0}</p>
+        <p>Category: {book.category || "No Category"}</p>
+        <p>Description: {book.description || "No Description"}</p>
+        <p>Stock: {book.stock || 0}</p>
         <button className="btn btn-success" onClick={handleAddToCart}>Add to Cart</button>
       </div>
     </div>

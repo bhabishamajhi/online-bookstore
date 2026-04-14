@@ -30,8 +30,8 @@ const BookList = () => {
 
   const filteredBooks = books.filter(book => {
     const matchesSearch =
-      book.title.toLowerCase().includes(search.toLowerCase()) ||
-      book.author.toLowerCase().includes(search.toLowerCase());
+     (book.title || "").toLowerCase().includes(search.toLowerCase()) ||
+      (book.author || "").toLowerCase().includes(search.toLowerCase());
 
     const matchesCategory = category === "All" || book.category === category;
 
