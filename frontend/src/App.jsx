@@ -6,7 +6,6 @@ import BookDetails from "./components/BookDetails";
 import AddBook from "./components/AddBook";
 import EditBook from "./components/EditBook";
 import Cart from "./components/Cart";
-import Home from "./pages/Home";
 
 const App = () => {
   return (
@@ -34,4 +33,3 @@ const App = () => {
 };
 
 export default App;
-export { Home };
