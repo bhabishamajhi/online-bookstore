@@ -10,10 +10,27 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    fetchCart();
-  }, []);
+  let isMounted = true;
 
-  // PROFESSIONAL LOGIC
+  const loadCart = async () => {
+    try {
+      const res = await api.get("/cart/default-user");
+
+      if (isMounted) {
+        setCart(res.data || { items: [] });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  loadCart();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
   const updateQuantity = async (item, newQty) => {
     if (newQty <= 0) {
       await api.post("/cart/remove", {

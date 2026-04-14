@@ -7,15 +7,21 @@ exports.getCart = async (req, res) => {
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      cart = await Cart.create({ userId, items: [] });
+      cart = await Cart.create({
+        userId,
+        items: []
+      });
     }
 
-    res.json(cart);
+    res.json({
+      userId: cart.userId,
+      items: cart.items || []
+    });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
 exports.addToCart = async (req, res) => {
   const { userId, bookId, title, price, quantity } = req.body;
 
