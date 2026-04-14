@@ -1,37 +1,17 @@
-const Cart = require("../models/cartModel");
-const Book = require("../models/bookModel");
+exports.removeFromCart = async (req, res) => {
+  const { userId, bookId } = req.body;
 
-exports.addToCart = async (req,res)=>{
-  const {userId, bookId, quantity} = req.body;
+  try {
+    const cart = await Cart.findOne({ userId });
 
-  const book = await Book.findById(bookId);
-  let cart = await Cart.findOne({userId});
+    if (!cart) return res.json({ items: [] });
 
-  if(!cart) cart = new Cart({userId, items:[]});
+    cart.items = cart.items.filter(item => item.bookId !== bookId);
 
-  const item = cart.items.find(i=>i.bookId.toString()===bookId);
+    await cart.save();
 
-  if(item){
-    item.quantity = quantity;
-  }else{
-    cart.items.push({
-      bookId,
-      title: book.title,
-      quantity,
-      price: book.price
-    });
+    res.json(cart);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  await cart.save();
-  res.json(cart);
-};
-
-exports.getCart = async (req,res)=>{
-  const cart = await Cart.findOne({userId:req.params.userId});
-  res.json(cart || {items:[]});
-};
-
-exports.clearCart = async (req,res)=>{
-  await Cart.deleteOne({userId:req.params.userId});
-  res.json({msg:"Cleared"});
 };
