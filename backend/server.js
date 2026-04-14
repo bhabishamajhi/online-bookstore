@@ -15,7 +15,7 @@ app.use("/api/books", require("./routes/bookRoutes"));
 app.use("/api/cart", require("./routes/cartRoutes"));
 
 app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
+  res.send("Backend is running ");
 });
 
 app.listen(PORT, () => {

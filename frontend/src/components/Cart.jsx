@@ -13,9 +13,10 @@ const Cart = () => {
 
   const updateQuantity = async (bookId, quantity) => {
   if (quantity < 1) {
-    await api.delete(`/cart/${bookId}`, {
-      data: { userId: "default-user" }
-    });
+  await api.post("/cart/remove", {
+    userId: "default-user",
+    bookId
+  });
   } else {
     await api.post("/cart", {
       userId: "default-user",
