@@ -30,22 +30,8 @@ const BookDetails = () => {
 }, [id]);
 
   const handleAddToCart = async (book) => {
-  try {
-    console.log("ADDING:", book);
 
-    await api.post("/cart", {
-      userId: "default-user",
-      bookId: book._id,
-      title: book.title,
-      price: book.price,
-      quantity: 1
-    });
-
-    alert("Added to cart");
-
-  } catch (err) {
-    console.error("Add to cart error:", err.response?.data || err.message);
-  }
+  console.log("BUTTON CLICKED", book);
 };
   if (!book) return <p>Loading....</p>;
 
