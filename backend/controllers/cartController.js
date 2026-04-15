@@ -26,8 +26,7 @@ exports.getCart = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   let { userId, bookId, title, price, quantity } = req.body;
-
-  try {
+try {
     quantity = Number(quantity);
 
     let cart = await Cart.findOne({ userId });
@@ -51,7 +50,8 @@ if (index > -1) {
     await cart.save();
     res.json(cart);
 
-  } catch (err) {
+  }
+} catch (err) {
     console.error("Add to cart error:", err);
     res.status(500).json({ error: err.message });
   }
@@ -70,10 +70,8 @@ exports.removeItem = async (req, res) => {
     );
 
     if (index > -1) {
-      // decrease quantity first
       cart.items[index].quantity -= 1;
 
-      // remove only if quantity becomes 0
       if (cart.items[index].quantity <= 0) {
         cart.items.splice(index, 1);
       }
