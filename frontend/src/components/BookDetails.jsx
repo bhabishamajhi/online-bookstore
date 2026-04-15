@@ -7,12 +7,27 @@ const BookDetails = () => {
   const [book, setBook] = useState(null);
 
   useEffect(() => {
-    const fetchBook = async () => {
+  const fetchBook = async () => {
+    try {
+      console.log("ID:", id);
+
       const res = await api.get(`/books/${id}`);
-      setBook(res.data);
-    };
-    fetchBook();
-  }, [id]);
+
+      console.log("RAW RESPONSE:", res.data);
+
+      const bookData = Array.isArray(res.data)
+        ? res.data[0]
+        : res.data;
+
+      setBook(bookData);
+
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  };
+
+  fetchBook();
+}, [id]);
 
   const handleAddToCart = async () => {
   try {
