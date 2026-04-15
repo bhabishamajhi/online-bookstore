@@ -9,13 +9,13 @@ exports.getCart = async (req, res) => {
     if (!cart) {
       cart = await Cart.create({
         userId,
-        items: []
+        items: [],
       });
     }
 
     res.json({
       userId: cart.userId,
-      items: cart.items || []
+      items: cart.items || [],
     });
 
   } catch (err) {
@@ -23,10 +23,13 @@ exports.getCart = async (req, res) => {
   }
 };
 
+
 exports.addToCart = async (req, res) => {
-  const { userId, bookId, title, price, quantity } = req.body;
+  let { userId, bookId, title, price, quantity } = req.body;
 
   try {
+    quantity = Number(quantity);
+
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
@@ -36,11 +39,11 @@ exports.addToCart = async (req, res) => {
       });
     } else {
       const index = cart.items.findIndex(
-        (item) => item.bookId.toString() === bookId
+        (item) => item.bookId === bookId
       );
 
       if (index > -1) {
-        cart.items[index].quantity += quantity; // IMPORTANT FIX
+        cart.items[index].quantity += quantity;
       } else {
         cart.items.push({ bookId, title, price, quantity });
       }
@@ -50,10 +53,11 @@ exports.addToCart = async (req, res) => {
     res.json(cart);
 
   } catch (err) {
-    console.error(err);
+    console.error("Add to cart error:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 exports.removeItem = async (req, res) => {
   const { userId, bookId } = req.body;
 
@@ -65,10 +69,12 @@ exports.removeItem = async (req, res) => {
     );
 
     res.json(cart);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.clearCart = async (req, res) => {
   const { userId } = req.params;
@@ -80,6 +86,7 @@ exports.clearCart = async (req, res) => {
     );
 
     res.json({ message: "Cart cleared" });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
