@@ -35,12 +35,12 @@ exports.addToCart = async (req, res) => {
         items: [{ bookId, title, price, quantity }],
       });
     } else {
-      const existingItem = cart.items.find(
-        (item) => item.bookId === bookId
+      const index = cart.items.findIndex(
+        (item) => item.bookId.toString() === bookId
       );
 
-      if (existingItem) {
-        existingItem.quantity = (existingItem.quantity || 0) + quantity;
+      if (index > -1) {
+        cart.items[index].quantity += quantity; // IMPORTANT FIX
       } else {
         cart.items.push({ bookId, title, price, quantity });
       }
@@ -50,6 +50,7 @@ exports.addToCart = async (req, res) => {
     res.json(cart);
 
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
