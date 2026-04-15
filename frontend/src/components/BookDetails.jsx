@@ -52,7 +52,7 @@ const BookDetails = () => {
     console.log("FETCH ERROR:", err);
   }
 };
-  if (!book) return <p>Loading...</p>;
+  if (!book) return <p>Loading....</p>;
 
   return (
     <div className="card">
