@@ -84,3 +84,19 @@ exports.removeItem = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.clearCart = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await Cart.findOneAndUpdate(
+      { userId },
+      { items: [] }
+    );
+
+    res.json({ message: "Cart cleared" });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
