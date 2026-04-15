@@ -55,7 +55,7 @@ const Cart = () => {
       ) : (
         cart.items.map((item) => (
           <div
-            key={item._id}
+            key={item.bookId}
             className="d-flex justify-content-between border p-2 mb-2"
           >
             <div>
