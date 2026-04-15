@@ -29,17 +29,17 @@ const BookDetails = () => {
   fetchBook();
 }, [id]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (book) => {
   try {
-    const res = await api.post("/cart", {
+    console.log("ADDING:", book);
+
+    await api.post("/cart", {
       userId: "default-user",
       bookId: book._id,
       title: book.title,
       price: book.price,
       quantity: 1
     });
-
-    console.log("Cart response:", res.data);
 
     alert("Added to cart");
 
@@ -58,7 +58,12 @@ const BookDetails = () => {
         <p>Category: {book.category || "No Category"}</p>
         <p>Description: {book.description || "No Description"}</p>
         <p>Stock: {book.stock || 0}</p>
-        <button onClick={() => handleAddToCart()}>Add to Cart</button>
+        <button
+  className="btn btn-success"
+  onClick={() => handleAddToCart(book)}
+>
+  Add to Cart
+</button>
       </div>
     </div>
   );
