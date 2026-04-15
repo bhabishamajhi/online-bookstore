@@ -33,10 +33,7 @@ const Cart = () => {
 
   const updateQuantity = async (item, newQty) => {
     if (newQty <= 0) {
-      await api.post("/cart/remove", {
-        userId: "default-user",
-        bookId: item.bookId,
-      });
+      await api.delete(`/cart/remove/${item._id}`);
     } else {
       await api.post("/cart", {
         userId: "default-user",
@@ -64,7 +61,7 @@ const Cart = () => {
       ) : (
         cart.items.map((item) => (
           <div
-            key={item.bookId}
+            key={item._id}
             className="d-flex justify-content-between border p-2 mb-2"
           >
             <div>
