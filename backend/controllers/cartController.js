@@ -1,4 +1,4 @@
-const Cart = require("./models/cartModel");
+const Cart = require("../models/cartModel");
 
 exports.getCart = async (req, res) => {
   const { userId } = req.params;
