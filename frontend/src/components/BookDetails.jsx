@@ -14,7 +14,7 @@ const BookDetails = () => {
     fetchBook();
   }, [id]);
 
-  const handleAddToCart = async (book) => {
+  const handleAddToCart = async () => {
   try {
     await api.post("/cart", {
       userId: "default-user",
@@ -40,7 +40,7 @@ const BookDetails = () => {
         <p>Category: {book.category || "No Category"}</p>
         <p>Description: {book.description || "No Description"}</p>
         <p>Stock: {book.stock || 0}</p>
-        <button className="btn btn-success" onClick={handleAddToCart}>Add to Cart</button>
+        <button onClick={() => handleAddToCart()}>Add to Cart</button>
       </div>
     </div>
   );
