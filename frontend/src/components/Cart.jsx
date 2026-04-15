@@ -25,7 +25,7 @@ const Cart = () => {
         bookId: item.bookId,
         title: item.title,
         price: item.price,
-        quantity: newQty,
+        quantity: 1,
       });
     }
 
