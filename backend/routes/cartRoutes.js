@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
       );
 
       if (existingItem) {
-        existingItem.quantity = quantity;
+        existingItem.quantity = (existingItem.quantity || 0) + quantity;
       } else {
         cart.items.push({ bookId, title, price, quantity });
       }
