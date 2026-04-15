@@ -11,6 +11,12 @@ const Cart = () => {
 
   useEffect(() => {
   fetchCart();
+
+  const handler = () => fetchCart();
+
+  window.addEventListener("cartUpdated", handler);
+
+  return () => window.removeEventListener("cartUpdated", handler);
 }, []);
   const updateQuantity = async (item, newQty) => {
   try {
