@@ -7,8 +7,18 @@ const Cart = require("./models/cartModel");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+
 app.use(express.json());
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://online-bookstore-549hg7w29-bhabishamajhis-projects.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 connectDB();
 
