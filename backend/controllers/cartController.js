@@ -22,6 +22,7 @@ exports.getCart = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 exports.addToCart = async (req, res) => {
   const { userId, bookId, title, price, quantity } = req.body;
 
@@ -29,43 +30,42 @@ exports.addToCart = async (req, res) => {
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      cart = new Cart({ userId, items: [] });
-    }
-
-    const itemIndex = cart.items.findIndex(
-      (i) => i.bookId === bookId
-    );
-
-    if (itemIndex > -1) {
-      cart.items[itemIndex].quantity = quantity;
+      cart = new Cart({
+        userId,
+        items: [{ bookId, title, price, quantity }],
+      });
     } else {
-      cart.items.push({ bookId, title, price, quantity });
+      const existingItem = cart.items.find(
+        (item) => item.bookId === bookId
+      );
+
+      if (existingItem) {
+        existingItem.quantity = quantity;
+      } else {
+        cart.items.push({ bookId, title, price, quantity });
+      }
     }
 
     await cart.save();
     res.json(cart);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
-
 exports.removeItem = async (req, res) => {
   const { userId, bookId } = req.body;
 
   try {
-    const cart = await Cart.findOne({ userId });
-
-    if (!cart) return res.json({ items: [] });
-
-    cart.items = cart.items.filter(
-      (i) => i.bookId !== bookId
+    const cart = await Cart.findOneAndUpdate(
+      { userId },
+      { $pull: { items: { bookId } } },
+      { new: true }
     );
-
-    await cart.save();
 
     res.json(cart);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 

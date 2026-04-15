@@ -15,7 +15,10 @@ const Cart = () => {
   const updateQuantity = async (item, newQty) => {
   try {
     if (newQty <= 0) {
-      await api.delete(`/cart/remove/${item._id}`);
+      await api.post("/cart/remove", {
+  userId: "default-user",
+  bookId: item.bookId,
+});
     } else {
       await api.post("/cart", {
         userId: "default-user",
