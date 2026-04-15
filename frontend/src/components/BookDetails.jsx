@@ -14,15 +14,21 @@ const BookDetails = () => {
     fetchBook();
   }, [id]);
 
-  const handleAddToCart = async () => {
-  await api.post("/cart", {
-    userId: "default-user",
-    bookId: book._id,
-    quantity: 1
-  });
-  alert("Added to cart");
-};
+  const handleAddToCart = async (book) => {
+  try {
+    await api.post("/cart", {
+      userId: "default-user",
+      bookId: book._id,
+      title: book.title,
+      price: book.price,
+      quantity: 1
+    });
 
+    alert("Added to cart");
+  } catch (err) {
+    console.error("Add to cart error:", err);
+  }
+};
   if (!book) return <p>Loading....</p>;
 
   return (
