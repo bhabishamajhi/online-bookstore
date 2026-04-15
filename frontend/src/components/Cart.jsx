@@ -10,28 +10,10 @@ const Cart = () => {
   };
 
   useEffect(() => {
-  let isMounted = true;
-
-  const loadCart = async () => {
-    try {
-      const res = await api.get("/cart/default-user");
-
-      if (isMounted) {
-        setCart(res.data || { items: [] });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  loadCart();
-
-  return () => {
-    isMounted = false;
-  };
+  fetchCart();
 }, []);
-
   const updateQuantity = async (item, newQty) => {
+  try {
     if (newQty <= 0) {
       await api.delete(`/cart/remove/${item._id}`);
     } else {
@@ -45,7 +27,10 @@ const Cart = () => {
     }
 
     fetchCart();
-  };
+  } catch (err) {
+    console.error("Cart update error:", err);
+  }
+};
 
   const total = (cart.items || []).reduce(
     (sum, i) => sum + i.price * i.quantity,
