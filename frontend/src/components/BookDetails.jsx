@@ -29,9 +29,28 @@ const BookDetails = () => {
   fetchBook();
 }, [id]);
 
-  const handleAddToCart = async (book) => {
+  const handleAddToCart = async () => {
+  try {
+    const res = await fetch("https://online-bookstore-uwqb.onrender.com/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId: "default-user",
+        bookId: book._id,
+        title: book.title,
+        price: book.price,
+        quantity: 1
+      })
+    });
 
-  console.log("BUTTON CLICKED", book);
+    const data = await res.json();
+    console.log("FETCH RESPONSE:", data);
+
+  } catch (err) {
+    console.log("FETCH ERROR:", err);
+  }
 };
   if (!book) return <p>Loading....</p>;
 
