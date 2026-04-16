@@ -47,6 +47,10 @@ app.get("/fix-cart", async (req, res) => {
   res.send("Cart cleared");
 });
 
+app.get("/api", (req, res) => {
+  res.send("API is running...");
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
