@@ -39,8 +39,8 @@ exports.addToCart = async (req, res) => {
       });
     } else {
       const index = cart.items.findIndex(
-        item => item.bookId === bookId
-      );
+  item => item.bookId.toString() === bookId.toString()
+);
 
       if (index > -1) {
         cart.items[index].quantity += quantity;
@@ -66,8 +66,8 @@ exports.removeItem = async (req, res) => {
     if (!cart) return res.json({});
 
     const index = cart.items.findIndex(
-      item => item.bookId === bookId
-    );
+  item => item.bookId.toString() === bookId.toString()
+);
 
     if (index > -1) {
       cart.items[index].quantity -= 1;

@@ -22,16 +22,16 @@ const Cart = () => {
   try {
     if (newQty <= 0) {
       await api.post("/cart/remove", {
-  userId: "default-user",
-  bookId: item.bookId,
-});
+        userId: "default-user",
+        bookId: item.bookId,
+      });
     } else {
       await api.post("/cart", {
         userId: "default-user",
         bookId: item.bookId,
         title: item.title,
         price: item.price,
-        quantity: 1
+        quantity: 1  
       });
     }
 
@@ -62,21 +62,14 @@ const Cart = () => {
               <b>{item.title}</b>
               <br />
 
-              <button onClick={() =>
-                updateQuantity(item, item.quantity - 1)
-              }>
-                -
-              </button>
+              <button onClick={() => updateQuantity(item, -1)}>-</button>
+
 
               <span style={{ margin: "0 10px" }}>
                 {item.quantity}
               </span>
 
-              <button onClick={() =>
-                updateQuantity(item, item.quantity + 1)
-              }>
-                +
-              </button>
+              <button onClick={() => updateQuantity(item, 1)}>+</button>
             </div>
 
             <div>${item.price * item.quantity}</div>
