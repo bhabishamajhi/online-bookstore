@@ -62,14 +62,14 @@ const Cart = () => {
               <b>{item.title}</b>
               <br />
 
-              <button onClick={() => updateQuantity(item, -1)}>-</button>
+              <button style={{ backgroundColor: "transparent", border: "none", color: "#01070eff", cursor: "pointer" }} onClick={() => updateQuantity(item, -1)}>-</button>
 
 
               <span style={{ margin: "0 10px" }}>
                 {item.quantity}
               </span>
 
-              <button onClick={() => updateQuantity(item, 1)}>+</button>
+              <button style={{ backgroundColor: "transparent", border: "none", color: "#01070eff", cursor: "pointer" }} onClick={() => updateQuantity(item, 1)}>+</button>
             </div>
 
             <div>${item.price * item.quantity}</div>
